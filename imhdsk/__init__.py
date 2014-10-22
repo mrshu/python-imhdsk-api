@@ -93,6 +93,6 @@ def routes(start, dest, city='ba'):
 
         route.begin_time = route.drives[0].begin_time
         route.end_time = route.drives[-1].end_time
-        route.append(route)
+        routes.append(route)
 
     return routes
