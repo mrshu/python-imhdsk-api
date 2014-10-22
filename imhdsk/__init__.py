@@ -1,8 +1,9 @@
 import requests
+import time as t
 from lxml import html
 
 IMHD_URL = "http://imhd.zoznam.sk/{2}/planovac-cesty-vyhladanie-spojenia.html?" \
-    "spojenieodkial={0}&spojeniekam={1}"
+    "spojenieodkial={0}&spojeniekam={1}&cas={3}&datum={4}"
 
 
 class Route(object):
@@ -12,7 +13,7 @@ class Route(object):
     drives = []
 
     def __repr__(self):
-        return ' -- '.join(map(str, self.drives))
+        return ' >> '.join(map(str, self.drives))
 
 
 class Drive(object):
@@ -32,18 +33,26 @@ class Drive(object):
         if self.walk:
             return "{0} -> {1}: {2}".format(self.start, self.dest, self.length)
         else:
-            return "[{5}] ({3}) {0} -> ({4}) {1}: {2}".format(self.start,
-                                                              self.dest,
-                                                              self.length,
-                                                              self.begin_time,
-                                                              self.end_time,
-                                                              self.line)
-
-from lxml import etree
+            return "[{5}] {0} {3} -> {1} {4}: {2}".format(self.start,
+                                                          self.dest,
+                                                          self.length,
+                                                          self.begin_time,
+                                                          self.end_time,
+                                                          self.line)
 
 
-def routes(start, dest, city='ba'):
-    r = requests.get(IMHD_URL.format(start, dest, city))
+def routes(start, dest, city='ba', time='', date=''):
+    if time != '':
+        if len(time) == 4:
+            time = time[:2] + ":" + time[2:]
+        elif not (':' in time):
+            time = ''
+
+        if date == '':
+            localtime = t.localtime()
+            date = t.strftime("%d.%m.%Y", localtime)
+
+    r = requests.get(IMHD_URL.format(start, dest, city, time, date))
     tree = html.fromstring(r.text)
 
     routes = []
@@ -74,7 +83,7 @@ def routes(start, dest, city='ba'):
                 else:
                     drv.dest = tr.xpath('./td[2]/b[2]/text()')[0]
 
-                drv.length = tr.xpath('./td[2]/text()')[-1]
+                drv.length = tr.xpath('./td[2]/text()')[-1].strip()
                 route.drives.append(drv)
 
             tables = tr.xpath('./td[1]/table')
@@ -88,7 +97,7 @@ def routes(start, dest, city='ba'):
                 drv.dest = tables[1].xpath('./tr/td[2]/b/text()')[0]
 
                 drv.length = tr.xpath('./td/div/table/tr[1]/td[1]/text()')[-1] \
-                    .split(',')[-1]
+                    .split(',')[-1].strip()
 
                 drv.line = line
 
