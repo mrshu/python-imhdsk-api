@@ -42,15 +42,17 @@ class Drive(object):
 
 
 def routes(start, dest, city='ba', time='', date=''):
+    localtime = t.localtime()
     if time != '':
         if len(time) == 4:
             time = time[:2] + ":" + time[2:]
         elif not (':' in time):
-            time = ''
+            time = t.strftime("%H:%M", localtime)
+    else:
+        time = t.strftime("%H:%M", localtime)
 
-        if date == '':
-            localtime = t.localtime()
-            date = t.strftime("%d.%m.%Y", localtime)
+    if date == '':
+        date = t.strftime("%d.%m.%Y", localtime)
 
     r = requests.get(IMHD_URL.format(start, dest, city, time, date))
     tree = html.fromstring(r.text)
