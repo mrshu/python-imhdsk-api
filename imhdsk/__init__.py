@@ -32,10 +32,12 @@ class Drive(object):
         if self.walk:
             return "{0} -> {1}: {2}".format(self.start, self.dest, self.length)
         else:
-            return "({3}) {0} -> ({4}) {1}: {2}".format(self.start, self.dest,
-                                                        self.length,
-                                                        self.begin_time,
-                                                        self.end_time)
+            return "[{5}] ({3}) {0} -> ({4}) {1}: {2}".format(self.start,
+                                                              self.dest,
+                                                              self.length,
+                                                              self.begin_time,
+                                                              self.end_time,
+                                                              self.line)
 
 from lxml import etree
 
@@ -51,12 +53,12 @@ def routes(start, dest, city='ba'):
         route = Route()
         route.drives = []
 
+        line = None
         for tr in route_table.xpath('./tr')[1:]:
-            line = None
 
-            line = tr.xpath('./td[1]/span/text()')
-            if len(line) > 0:
-                line = line[0]
+            l = tr.xpath('./td[1]/span/text()')
+            if len(l) > 0:
+                line = l[0]
 
             walker = tr.xpath('./td[1]/img')
             if len(walker) > 0 and \
@@ -87,6 +89,7 @@ def routes(start, dest, city='ba'):
 
                 drv.length = tr.xpath('./td/div/table/tr[1]/td[1]/text()')[-1] \
                     .split(',')[-1]
+
                 drv.line = line
 
                 route.drives.append(drv)
