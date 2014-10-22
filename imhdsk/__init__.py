@@ -1,7 +1,7 @@
 import requests
 from lxml import html
 
-IMHD_URL = "http://imhd.zoznam.sk/ba/planovac-cesty-vyhladanie-spojenia.html?"\
+IMHD_URL = "http://imhd.zoznam.sk/{2}/planovac-cesty-vyhladanie-spojenia.html?" \
     "spojenieodkial={0}&spojeniekam={1}"
 
 
@@ -40,18 +40,18 @@ class Drive(object):
 from lxml import etree
 
 
-def routes(start, dest):
-    r = requests.get(IMHD_URL.format(start, dest))
+def routes(start, dest, city='ba'):
+    r = requests.get(IMHD_URL.format(start, dest, city))
     tree = html.fromstring(r.text)
 
-    out_routes = []
-    routes = tree.xpath('//div[@class="sp"]/table')[1:]
-    for route in routes:
+    routes = []
+    html_routes = tree.xpath('//div[@class="sp"]/table')[1:]
+    for route_table in html_routes:
         line = None
-        out_route = Route()
-        out_route.drives = []
+        route = Route()
+        route.drives = []
 
-        for tr in route.xpath('./tr')[1:]:
+        for tr in route_table.xpath('./tr')[1:]:
             line = None
 
             line = tr.xpath('./td[1]/span/text()')
@@ -73,7 +73,7 @@ def routes(start, dest):
                     drv.dest = tr.xpath('./td[2]/b[2]/text()')[0]
 
                 drv.length = tr.xpath('./td[2]/text()')[-1]
-                out_route.drives.append(drv)
+                route.drives.append(drv)
 
             tables = tr.xpath('./td[1]/table')
             if len(tables) > 0:
@@ -89,10 +89,10 @@ def routes(start, dest):
                     .split(',')[-1]
                 drv.line = line
 
-                out_route.drives.append(drv)
+                route.drives.append(drv)
 
-        out_route.begin_time = out_route.drives[0].begin_time
-        out_route.end_time = out_route.drives[-1].end_time
-        out_routes.append(out_route)
+        route.begin_time = route.drives[0].begin_time
+        route.end_time = route.drives[-1].end_time
+        route.append(route)
 
-    return out_routes
+    return routes
