@@ -5,7 +5,7 @@ from lxml import html
 IMHD_URL = "http://imhd.zoznam.sk/{2}/planovac-cesty-vyhladanie-spojenia.html?" \
     "spojenieodkial={0}&spojeniekam={1}&cas={3}&datum={4}"
 
-IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/ba/api/sk/vyhladavanie.php"
+IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/{0}/api/sk/vyhladavanie.php"
 
 
 class Route(object):
@@ -114,8 +114,8 @@ def routes(start, dest, city='ba', time='', date=''):
     return routes
 
 
-def suggest(term):
-    r = requests.get(IMHD_URL_SUGGEST, params={
+def suggest(term, city='ba'):
+    r = requests.get(IMHD_URL_SUGGEST.format(city), params={
         'limit': '10',
         'akcia': 'zastavka',
         'q': term
