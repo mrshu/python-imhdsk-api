@@ -124,3 +124,12 @@ def suggest(term, city='ba'):
         'q': term
     })
     return r.json()
+
+
+def clear_stop(stop):
+    """Remove things that are not worth having as a stop in mhd"""
+    try:
+        stop = stop[:stop.index('(')]
+    except:
+        pass
+    return stop.strip()
