@@ -2,9 +2,7 @@ import requests
 import time as t
 from lxml import html
 
-IMHD_URL = "http://imhd.zoznam.sk/{2}/planovac-cesty-vyhladanie-spojenia.html?" \
-    "spojenieodkial={0}&spojeniekam={1}&cas={3}&datum={4}"
-
+IMHD_URL = "http://imhd.zoznam.sk/{0}/planovac-cesty-vyhladanie-spojenia.html"
 IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/{0}/api/sk/vyhladavanie.php"
 
 
@@ -56,7 +54,12 @@ def routes(start, dest, city='ba', time='', date=''):
     if date == '':
         date = t.strftime("%d.%m.%Y", localtime)
 
-    r = requests.get(IMHD_URL.format(start, dest, city, time, date))
+    r = requests.get(IMHD_URL.format(city), params={
+        'spojenieodkial': start,
+        'spojeniekam': dest,
+        'cas': time,
+        'datum': date
+    })
     tree = html.fromstring(r.text)
 
     routes = []
