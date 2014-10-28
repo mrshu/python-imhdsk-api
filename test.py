@@ -1,5 +1,9 @@
 import imhdsk
 
-r = imhdsk.routes('zoo', 'eston', time='22:00', date='25.10.2014')
+r = imhdsk.routes('zoo', 'estonska')
 for d in r:
     print (d.drives)
+
+suggestions = imhdsk.suggest('hlavna stanica')
+for s in suggestions:
+    print (s)

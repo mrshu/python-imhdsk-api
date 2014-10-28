@@ -5,6 +5,8 @@ from lxml import html
 IMHD_URL = "http://imhd.zoznam.sk/{2}/planovac-cesty-vyhladanie-spojenia.html?" \
     "spojenieodkial={0}&spojeniekam={1}&cas={3}&datum={4}"
 
+IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/ba/api/sk/vyhladavanie.php"
+
 
 class Route(object):
     begin_time = None
@@ -110,3 +112,12 @@ def routes(start, dest, city='ba', time='', date=''):
         routes.append(route)
 
     return routes
+
+
+def suggest(term):
+    r = requests.get(IMHD_URL_SUGGEST, params={
+        'limit': '10',
+        'akcia': 'zastavka',
+        'q': term
+    })
+    return r.json()
