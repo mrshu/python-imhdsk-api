@@ -2,6 +2,10 @@ import requests
 import time as t
 from lxml import html
 
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 IMHD_URL = "http://imhd.zoznam.sk/{0}/planovac-cesty-vyhladanie-spojenia.html"
 IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/{0}/api/sk/vyhladavanie.php"
 
@@ -31,14 +35,16 @@ class Drive(object):
 
     def __repr__(self):
         if self.walk:
-            return "{0} -> {1}: {2}".format(self.start, self.dest, self.length)
+            return u"{0} -> {1}: {2}".format(self.start,
+                                             self.dest,
+                                             self.length)
         else:
-            return "[{5}] {0} {3} -> {1} {4}: {2}".format(self.start,
-                                                          self.dest,
-                                                          self.length,
-                                                          self.begin_time,
-                                                          self.end_time,
-                                                          self.line)
+            return u"[{5}] {0} {3} -> {1} {4}: {2}".format(self.start,
+                                                           self.dest,
+                                                           self.length,
+                                                           self.begin_time,
+                                                           self.end_time,
+                                                           self.line)
 
 
 def routes(start, dest, city='ba', time='', date=''):
