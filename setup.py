@@ -4,9 +4,10 @@
 from setuptools import setup
 
 setup(name='imhdsk',
-      version='0.0.1',
+      version='0.0.3',
       description='An unofficial API for imhd.sk',
       maintainer='mr.Shu',
       maintainer_email='mr@shu.io',
       url='https://github.com/mrshu/python-imhdsk-api',
-      packages=['imhdsk'])
+      packages=['imhdsk'],
+      install_requires=['requests', 'lxml'])
