@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='imhdsk',
-      version='0.0.3',
+      version='0.0.4',
       description='An unofficial API for imhd.sk',
       maintainer='mr.Shu',
       maintainer_email='mr@shu.io',
