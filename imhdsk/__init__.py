@@ -51,12 +51,12 @@ class Drive(object):
 def routes(start, dest, city='ba', time='', date=''):
     localtime = t.localtime()
     if time != '':
-        if len(time) == 4:
-            time = time[:2] + ":" + time[2:]
-        elif not (':' in time):
-            time = t.strftime("%H:%M", localtime)
+        # Unfortunately, requests on Python3 make use of urllib3 which has
+        # issues with percent encoding everything, even colons. We therefore
+        # have to live without them
+        time = time.replace(':', '')
     else:
-        time = t.strftime("%H:%M", localtime)
+        time = t.strftime("%H%M", localtime)
 
     if date == '':
         date = t.strftime("%d.%m.%Y", localtime)
