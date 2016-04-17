@@ -6,8 +6,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-IMHD_URL = "http://imhd.zoznam.sk/{0}/planovac-cesty-vyhladanie-spojenia.html"
-IMHD_URL_SUGGEST = "http://imhd.zoznam.sk/{0}/api/sk/vyhladavanie.php"
+IMHD_URL = "http://imhd.sk/{0}/planovac-cesty-vyhladanie-spojenia.html"
+IMHD_URL_SUGGEST = "http://imhd.sk/{0}/api/sk/vyhladavanie.php"
 
 
 class Route(object):
