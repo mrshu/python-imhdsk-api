@@ -8,7 +8,7 @@ if (sys.version).startswith('2'):
     sys.setdefaultencoding("utf-8")
 
 IMHD_URL = "http://imhd.sk/{0}/planovac-cesty-vyhladanie-spojenia.html"
-IMHD_URL_SUGGEST = "http://imhd.sk/{0}/api/sk/vyhladavanie.php"
+IMHD_URL_SUGGEST = "http://imhd.sk/{0}/api/sk/vyhladavanie"
 
 
 class Route(object):
@@ -110,7 +110,7 @@ def routes(start, dest, city='ba', time='', date=''):
                 drv.end_time = tables[1].xpath('./tr/td[1]/b/text()')[0]
                 drv.dest = tables[1].xpath('./tr/td[2]/b/text()')[0]
 
-                drv.length = tr.xpath('./td/div/table/tr[1]/td[1]/text()')[-1] \
+                drv.length = tr.xpath('./td/div/table/tr[1]/td[1]/text()')[-1]\
                     .split(',')[-1].strip()
 
                 drv.line = line
