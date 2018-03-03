@@ -36,16 +36,16 @@ class Drive(object):
 
     def __repr__(self):
         if self.walk:
-            return u"{0} -> {1}: {2}".format(self.start,
-                                             self.dest,
-                                             self.length)
+            return u"({0} -> {1}: {2})".format(self.start,
+                                               self.dest,
+                                               self.length)
         else:
-            return u"[{5}] {0} {3} -> {1} {4}: {2}".format(self.start,
-                                                           self.dest,
-                                                           self.length,
-                                                           self.begin_time,
-                                                           self.end_time,
-                                                           self.line)
+            return u"([{5}] {0} {3} -> {1} {4}: {2})".format(self.start,
+                                                             self.dest,
+                                                             self.length,
+                                                             self.begin_time,
+                                                             self.end_time,
+                                                             self.line)
 
 
 def routes(start, dest, city='ba', time='', date=''):
