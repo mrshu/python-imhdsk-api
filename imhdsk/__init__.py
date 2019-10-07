@@ -103,7 +103,6 @@ def routes(start, dest, city='ba', time='', date=''):
             tables = tr.xpath('./td[1]/table')
             if len(tables) > 0:
                 drv = Drive()
-                tables = tr.xpath('./td[1]/table')
 
                 drv.begin_time = tables[0].xpath('./tr/td[1]/b/text()')[0]
                 drv.start = tables[0].xpath('./tr/td[2]/b/text()')[0]
